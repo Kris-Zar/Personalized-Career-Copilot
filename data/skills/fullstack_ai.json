@@ -1,0 +1,86 @@
+{
+  "goal_id": "goal_fullstack_ai",
+  "title": "Full-Stack AI Developer Career Path",
+  "description": "Competency graph for building end-to-end AI-powered web applications with modern frontend, backend, LLM agents, and vector storage.",
+  "target_role": "Full-Stack AI Developer",
+  "nodes": {
+    "web_frontend": {
+      "skill_id": "web_frontend",
+      "name": "Frontend Architecture (React & Modern UI)",
+      "description": "Modern component-based frontend engineering, state management, and responsive UI design.",
+      "category": "Frontend",
+      "parent_skill_id": null,
+      "prerequisite_skill_ids": [],
+      "target_proficiency": 0.80,
+      "assessment_item_ids": ["q_fe_01"],
+      "recommended_resource_types": ["course", "project"],
+      "difficulty": "intermediate",
+      "tags": ["react", "typescript", "frontend", "ui"]
+    },
+    "web_backend": {
+      "skill_id": "web_backend",
+      "name": "Backend Engineering & API Design",
+      "description": "RESTful API design, FastAPI/Node async patterns, authentication, and background task queues.",
+      "category": "Backend",
+      "parent_skill_id": null,
+      "prerequisite_skill_ids": [],
+      "target_proficiency": 0.85,
+      "assessment_item_ids": ["q_be_01"],
+      "recommended_resource_types": ["course", "project"],
+      "difficulty": "intermediate",
+      "tags": ["fastapi", "python", "backend", "rest-api"]
+    },
+    "db_systems": {
+      "skill_id": "db_systems",
+      "name": "Relational & Document Databases",
+      "description": "Relational schema design (PostgreSQL/SQLite), indexing, transactions, ORMs, and query optimization.",
+      "category": "Data",
+      "parent_skill_id": "web_backend",
+      "prerequisite_skill_ids": ["web_backend"],
+      "target_proficiency": 0.75,
+      "assessment_item_ids": ["q_db_01"],
+      "recommended_resource_types": ["exercise", "course"],
+      "difficulty": "intermediate",
+      "tags": ["sql", "postgresql", "databases"]
+    },
+    "llm_integration": {
+      "skill_id": "llm_integration",
+      "name": "LLM Integration & Function Calling",
+      "description": "Prompt engineering, structured output validation (Pydantic), tool calling, and streaming responses.",
+      "category": "AI Application",
+      "parent_skill_id": "web_backend",
+      "prerequisite_skill_ids": ["web_backend"],
+      "target_proficiency": 0.85,
+      "assessment_item_ids": ["q_llm_01"],
+      "recommended_resource_types": ["project", "course"],
+      "difficulty": "intermediate",
+      "tags": ["llm", "function-calling", "gemini", "langchain"]
+    },
+    "vector_db_rag": {
+      "skill_id": "vector_db_rag",
+      "name": "Vector Databases & RAG Pipelines",
+      "description": "Embedding models, semantic search, vector indexing (Chroma/Pinecone), chunking strategies, and retrieval-augmented generation.",
+      "category": "AI Application",
+      "parent_skill_id": "llm_integration",
+      "prerequisite_skill_ids": ["llm_integration", "db_systems"],
+      "target_proficiency": 0.80,
+      "assessment_item_ids": ["q_rag_01"],
+      "recommended_resource_types": ["project", "article"],
+      "difficulty": "advanced",
+      "tags": ["rag", "vector-db", "embeddings", "chroma"]
+    },
+    "fullstack_deployment": {
+      "skill_id": "fullstack_deployment",
+      "name": "Cloud Deployment & DevOps",
+      "description": "Containerization with Docker, reverse proxies, cloud hosting (Streamlit Cloud, Render, AWS), and CI/CD.",
+      "category": "DevOps",
+      "parent_skill_id": null,
+      "prerequisite_skill_ids": ["web_frontend", "web_backend"],
+      "target_proficiency": 0.75,
+      "assessment_item_ids": ["q_deploy_01"],
+      "recommended_resource_types": ["project", "video"],
+      "difficulty": "intermediate",
+      "tags": ["docker", "ci-cd", "cloud", "deployment"]
+    }
+  }
+}

@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XCL PathFinder — Adaptive Career Copilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* =========================================================
+     THEME 1: MEDIUM RED / CORAL LIGHT THEME
+     Canvas: #EAA298 · Container: #FFF7F5 · Cards: #FFFFFF · Rail: #1A2840
+     ========================================================= */
+    [data-theme="light"] {
+      --bg-canvas: #EAA298;
+      /* Medium Shade of Coral Red Canvas */
+      --bg-paper: #FFF7F5;
+      /* Soft Porcelain Container */
+      --bg-card: #FFFFFF;
+      /* Elevated Bright Card */
+      --bg-card-hover: #FFF0ED;
+      /* Soft Coral Hover */
+      --bg-rail: #19273F;
+      /* High-Contrast Oxford Slate Sidebar */
+      --rail-text: #FAF5FF;
+      /* Crisp Text on Rail */
+      --rail-text-soft: #A2B6D4;
+      /* Soft Text on Rail */
+
+      --border-subtle: #DEC0BA;
+      /* Soft Rose Border */
+      --border-highlight: #EF6351;
+      /* Coral Focus Border */
+
+      --text-primary: #152238;
+      /* Deep Oxford Slate Ink (14.2:1 AAA Contrast) */
+      --text-secondary: #4A5F7E;
+      /* Medium Slate */
+      --text-muted: #788BA6;
+      /* Muted Labels & Timestamps */
+
+      /* Semantic Accents */
+      --c-coral: #E54530;
+      /* Punchy Coral Red (CTAs, Active Tabs) */
+      --c-coral-soft: #F38375;
+      /* Salmon Rose */
+      --c-coral-tint: #FDECE9;
+      /* Soft Coral Callout Tint */
+      --c-tangerine: #D97A1E;
+      /* Tangerine Gold (XP Fill, Streak) */
+      --c-tangerine-tint: #FEF2E4;
+      --c-jade: #1A826B;
+      /* Deep Jade Teal (Mastered Skills) */
+      --c-jade-tint: #E2F6F1;
+      --c-cerulean: #1F6EA8;
+      /* Cerulean Sky (Skill Building) */
+      --c-cerulean-tint: #E5F0FA;
+
+      --btn-gradient: linear-gradient(135deg, #E54530, #F38375);
+      --momentum-gradient: linear-gradient(90deg, #D97A1E, #E54530);
+      --glow-coral: 0 4px 14px rgba(229, 69, 48, 0.35);
+      --glow-jade: 0 4px 14px rgba(26, 130, 107, 0.25);
+      --card-shadow: 0 8px 28px rgba(92, 38, 30, 0.12);
+      --pill-bg: #FDECE9;
+      --pill-color: #E54530;
+    }
+
+    /* =========================================================
+     THEME 2: MEDIUM WELL-DONE PURPLE DARK THEME
+     Canvas: #231032 · Container: #2C153E · Cards: #381A4E · Rail: #190925
+     ========================================================= */
+    [data-theme="dark"] {
+      --bg-canvas: #231032;
+      /* Medium Well-Done Royal Purple Canvas */
+      --bg-paper: #2C153E;
+      /* Midnight Plum Container Paper */
+      --bg-card: #381A4E;
+      /* Elevated Amethyst Card Surface */
+      --bg-card-hover: #45215F;
+      /* Hover State Surface */
+      --bg-rail: #190925;
+      /* Deep Obsidian Purple Sidebar */
+      --rail-text: #FAF5FF;
+      --rail-text-soft: #C6B3DA;
+
+      --border-subtle: #532A74;
+      /* Luminous Amethyst Border */
+      --border-highlight: #8B4BBF;
+      /* Active Highlight Border */
+
+      --text-primary: #FAF5FF;
+      /* Crisp Pearl White (14:1+ AAA Ultra-Contrast) */
+      --text-secondary: #C6B3DA;
+      /* Soft Lilac Slate */
+      --text-muted: #8E73A6;
+      /* Muted Metadata */
+
+      /* Semantic Accents */
+      --c-coral: #FF4D79;
+      /* Neon Magenta-Coral (Brand CTAs, Active States) */
+      --c-coral-soft: #FF7597;
+      --c-coral-tint: rgba(255, 77, 121, 0.16);
+      --c-tangerine: #FFB703;
+      /* Radiant Gold (Streak, XP Fill) */
+      --c-tangerine-tint: rgba(255, 183, 3, 0.16);
+      --c-jade: #59C9A5;
+      /* Luminous Aquamarine Mint (Mastered Skills) */
+      --c-jade-tint: rgba(89, 201, 165, 0.16);
+      --c-cerulean: #0AD3FF;
+      /* Electric Sky Blue */
+      --c-cerulean-tint: rgba(10, 211, 255, 0.16);
+
+      --btn-gradient: linear-gradient(135deg, #FF4D79, #E02657);
+      --momentum-gradient: linear-gradient(90deg, #FFB703, #FF4D79);
+      --glow-coral: 0 4px 16px rgba(255, 77, 121, 0.45);
+      --glow-jade: 0 4px 16px rgba(89, 201, 165, 0.35);
+      --card-shadow: 0 10px 36px rgba(0, 0, 0, 0.5);
+      --pill-bg: rgba(255, 77, 121, 0.16);
+      --pill-color: #FF4D79;
+    }
+
+    :root {
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px 24px 80px;
+      background: var(--bg-canvas);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    /* =========================================================
+     TOP NAVIGATION & PALETTE CONVERGENCE BAR
+     ========================================================= */
+    .toolbar-wrap {
+      max-width: 1060px;
+      margin: 0 auto 20px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 12px 20px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.25s ease;
+    }
+
+    .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--c-coral);
+      box-shadow: 0 0 10px var(--c-coral);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-paper);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--c-coral);
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Dual Theme Toggle Button */
+    .theme-toggle-btn {
+      background: var(--bg-paper);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 7px 16px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--c-coral);
+      box-shadow: var(--glow-coral);
+    }
+
+    /* Header Desc */
+    .header-desc {
+      max-width: 1060px;
+      margin: 0 auto 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header-desc h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .header-desc h1 span {
+      background: linear-gradient(135deg, var(--c-coral), var(--c-tangerine));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-desc p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .theme-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      background: var(--pill-bg);
+      color: var(--pill-color);
+      border: 1.5px solid var(--border-subtle);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+     SCREEN CONTAINER FRAME
+     ========================================================= */
+    .screen {
+      max-width: 1060px;
+      margin: 0 auto 40px;
+      background: var(--bg-paper);
+      border-radius: 20px;
+      border: 1.5px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: none;
+    }
+
+    .screen.visible {
+      display: block;
+      animation: fadeIn 0.18s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen-tag {
+      padding: 13px 24px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-bottom: 1.5px solid var(--border-subtle);
+      background: var(--bg-card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .screen-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--c-jade);
+      background: var(--c-jade-tint);
+      border: 1px solid var(--border-subtle);
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+     SIGNATURE COMPONENT: MOMENTUM METER
+     ========================================================= */
+    .momentum {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 7px 16px 7px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .flame {
+      font-size: 17px;
+      filter: drop-shadow(0 0 6px var(--c-coral));
+    }
+
+    .momentum-bar {
+      width: 120px;
+      height: 8px;
+      background: var(--bg-canvas);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .momentum-fill {
+      height: 100%;
+      background: var(--momentum-gradient);
+      border-radius: 4px;
+    }
+
+    .momentum-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+     SCREEN 01: DASHBOARD
+     ========================================================= */
+    .dash {
+      display: flex;
+      min-height: 520px;
+    }
+
+    .rail {
+      width: 190px;
+      flex-shrink: 0;
+      background: var(--bg-rail);
+      border-right: 1.5px solid var(--border-subtle);
+      padding: 20px 14px;
+    }
+
+    .rail-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 22px;
+      color: var(--rail-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rail-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--rail-text-soft);
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .rail-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--rail-text);
+    }
+
+    .rail-item.active {
+      background: var(--c-coral);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(229, 69, 48, 0.4);
+    }
+
+    .dash-main {
+      flex: 1;
+      padding: 26px 30px;
+      min-width: 0;
+    }
+
+    .dash-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .greet {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      margin: 0 0 4px;
+      color: var(--text-primary);
+    }
+
+    .greet-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Metrics Grid */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .metric {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .metric::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--c-cerulean);
+    }
+
+    .metric.success::after {
+      background: var(--c-jade);
+    }
+
+    .metric.urgent::after {
+      background: var(--c-coral);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .metric-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    /* Panels */
+    .panel {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .panel-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      margin: 0 0 16px;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--c-tangerine);
+      background: var(--c-tangerine-tint);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .skill-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .skill-name {
+      width: 125px;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+      color: var(--text-primary);
+    }
+
+    .skill-track {
+      flex: 1;
+      height: 9px;
+      background: var(--bg-canvas);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .skill-pct {
+      width: 110px;
+      text-align: right;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge.jade {
+      background: var(--c-jade-tint);
+      color: var(--c-jade);
+      border: 1.5px solid var(--border-subtle);
+    }
+
+    .badge.crimson {
+      background: var(--c-coral-tint);
+      color: var(--c-coral);
+      border: 1.5px solid var(--border-subtle);
+    }
+
+    .badge.tangerine {
+      background: var(--c-tangerine-tint);
+      color: var(--c-tangerine);
+      border: 1.5px solid var(--border-subtle);
+    }
+
+    .chat-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 12px 22px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chat-bar:hover {
+      border-color: var(--c-coral);
+      color: var(--text-primary);
+      box-shadow: var(--glow-coral);
+    }
+
+    /* =========================================================
+     SCREEN 02: ROADMAP
+     ========================================================= */
+    .roadmap-wrap {
+      padding: 30px 28px;
+    }
+
+    .track {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 0 8px;
+    }
+
+    .stage::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: -50%;
+      width: 100%;
+      height: 3px;
+      background: var(--border-subtle);
+      z-index: 0;
+    }
+
+    .stage:first-child::before {
+      display: none;
+    }
+
+    .stage.done::before,
+    .stage.current::before {
+      background: var(--c-coral);
+    }
+
+    .node {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      z-index: 1;
+      margin-bottom: 12px;
+      border: 2px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .stage.done .node {
+      background: var(--c-jade);
+      border-color: var(--c-jade);
+      color: #fff;
+      box-shadow: var(--glow-jade);
+    }
+
+    .stage.current .node {
+      background: var(--c-coral);
+      border-color: var(--c-coral);
+      color: #fff;
+      box-shadow: var(--glow-coral);
+    }
+
+    .stage.locked .node {
+      background: var(--bg-canvas);
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .stage-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 0 3px;
+      color: var(--text-primary);
+    }
+
+    .stage-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+    }
+
+    .stage-card {
+      margin-top: 16px;
+      background: var(--c-coral-tint);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 12px;
+      color: var(--text-primary);
+      text-align: left;
+      width: 100%;
+      line-height: 1.5;
+    }
+
+    .stage-card strong {
+      color: var(--c-coral);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    .resource-item {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .res-link {
+      color: var(--c-coral);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .res-link:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================================================
+     SCREEN 03: ASSESSMENT
+     ========================================================= */
+    .assess-wrap {
+      padding: 34px 28px;
+      max-width: 630px;
+      margin: 0 auto;
+    }
+
+    .assess-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .diff-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      background: var(--c-coral-tint);
+      color: var(--c-coral);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .q-progress {
+      height: 8px;
+      background: var(--bg-canvas);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .q-progress-fill {
+      width: 40%;
+      height: 100%;
+      background: var(--btn-gradient);
+    }
+
+    .q-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.5;
+      margin: 0 0 22px;
+      color: var(--text-primary);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt {
+      border: 1.5px solid var(--border-subtle);
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .opt:hover {
+      border-color: var(--c-coral);
+    }
+
+    .opt.selected {
+      border-color: var(--c-coral);
+      background: var(--c-coral-tint);
+      font-weight: 600;
+    }
+
+    .opt-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      flex-shrink: 0;
+      background: var(--bg-paper);
+      color: var(--text-secondary);
+    }
+
+    .opt.selected .opt-letter {
+      background: var(--c-coral);
+      border-color: var(--c-coral);
+      color: #fff;
+    }
+
+    .btn-action {
+      background: var(--btn-gradient);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 24px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: var(--glow-coral);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(229, 69, 48, 0.4);
+    }
+
+    /* =========================================================
+     SCREEN 04: RESULTS
+     ========================================================= */
+    .results-wrap {
+      padding: 30px 30px;
+    }
+
+    .diff-box {
+      background: var(--c-coral-tint);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .diff-box strong {
+      color: var(--c-coral);
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    /* =========================================================
+     SCREEN 05: CHAT
+     ========================================================= */
+    .chat-wrap {
+      padding: 24px 28px;
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+    }
+
+    .chat-thread {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 14px;
+    }
+
+    .msg {
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      max-width: 85%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .msg.assistant {
+      align-self: flex-start;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-left: 4px solid var(--c-coral);
+      color: var(--text-primary);
+    }
+
+    .checkpoint-card {
+      margin-top: 10px;
+      background: var(--c-tangerine-tint);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .checkpoint-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--c-tangerine);
+      margin-bottom: 4px;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding-top: 12px;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: 1.5px solid var(--border-subtle);
+      background: var(--bg-card);
+      border-radius: 999px;
+      padding: 11px 20px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      color: var(--text-primary);
+    }
+
+    .chat-input:focus {
+      border-color: var(--c-coral);
+    }
+
+    /* =========================================================
+     SCREEN 06: PROFILE (ONBOARDING BASELINE)
+     ========================================================= */
+    .profile-wrap {
+      max-width: 630px;
+      margin: 30px auto;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 30px 34px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 1.5px solid var(--border-subtle);
+      background: var(--bg-paper);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--c-coral);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-subtle);
+      background: var(--bg-paper);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 600;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .chip:hover {
+      border-color: var(--c-coral);
+      color: var(--text-primary);
+    }
+
+    .chip.selected {
+      background: var(--c-coral-tint);
+      border-color: var(--c-coral);
+      color: var(--c-coral);
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <span>XCL PathFinder</span>
+      </div>
+
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchScreen('profile')">01 · Profile</button>
+        <button class="tab-btn" onclick="switchScreen('chat')">02 · Goal Discovery</button>
+        <button class="tab-btn" onclick="switchScreen('assess')">03 · Assessment</button>
+        <button class="tab-btn" onclick="switchScreen('results')">04 · Results</button>
+        <button class="tab-btn" onclick="switchScreen('roadmap')">05 · Roadmap</button>
+        <button class="tab-btn" onclick="switchScreen('dash')">06 · Dashboard</button>
+      </div>
+
+      <!-- Dual Theme Toggle Switch -->
+      <button class="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span> <span id="theme-btn-label">Velvet Purple Dark</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="header-desc">
+    <div>
+      <h1 id="header-title">Welcome to <span>XCL PathFinder</span></h1>
+      <p id="header-sub">Begin your personalized learning journey with evidence-based competency calibration.</p>
+    </div>
+
+    <span id="theme-badge" class="theme-badge">☀️ Medium Red Light Active</span>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 06: PROFILE (FRESH START ONBOARDING)
+     ========================================================= -->
+  <div id="screen-profile" class="screen visible">
+    <div class="screen-tag">
+      <span>01 · Learner Profile &amp; Self-Reported Baseline</span>
+      <span class="screen-pill">Step 1 of 6</span>
+    </div>
+    <div class="profile-wrap">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="input-name" class="form-input" placeholder="e.g. Alex Chen">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Background / Role</label>
+        <input type="text" id="input-role" class="form-input" placeholder="e.g. Software Developer / CS Student">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Self-Reported Skill Baseline</label>
+        <div class="chips">
+          <span class="chip" onclick="this.classList.toggle('selected')">Python Core</span>
+          <span class="chip" onclick="this.classList.toggle('selected')">Git &amp; APIs</span>
+          <span class="chip" onclick="this.classList.toggle('selected')">Probability &amp; Stats</span>
+          <span class="chip" onclick="this.classList.toggle('selected')">Linear Algebra</span>
+          <span class="chip" onclick="this.classList.toggle('selected')">Machine Learning</span>
+          <span class="chip" onclick="this.classList.toggle('selected')">Deep Learning</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weekly Time Commitment</label>
+        <input type="text" id="input-hours" class="form-input" placeholder="e.g. 8 hours / week">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Timeline</label>
+        <input type="text" id="input-timeline" class="form-input" placeholder="e.g. 6 months">
+      </div>
+      <div style="text-align: right; margin-top: 24px;">
+        <button class="btn-action" onclick="saveProfileAndContinue()">Continue to Goal Discovery ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 05: CHAT (GOAL DISCOVERY & AI TUTOR)
+     ========================================================= -->
+  <div id="screen-chat" class="screen">
+    <div class="screen-tag">
+      <span>02 · Conversational Goal Discovery</span>
+      <span class="screen-pill">Step 2 of 6</span>
+    </div>
+    <div class="chat-wrap">
+      <div class="chat-thread">
+        <div class="msg assistant" id="chat-assistant-msg">
+          Hello! I'm your XCL PathFinder career copilot. State your target role, available weekly hours, and preferred
+          learning formats to extract your learning track.
+        </div>
+        <div class="msg user" id="chat-user-msg" style="display:none;">
+          I want to become an ML Engineer in 6 months. I have about 8 hours a week and prefer hands-on coding.
+        </div>
+        <div id="goal-card-wrap" style="display:none;">
+          <div class="checkpoint-card">
+            <div class="checkpoint-title">🎯 Goal Checkpoint Activated</div>
+            <div style="font-size: 12px; color: var(--text-primary);">
+              <b>Role:</b> Machine Learning Engineer · <b>Timeline:</b> 6 months · <b>Weekly Effort:</b> 8 hrs/week
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input-field" class="chat-input"
+          placeholder="e.g. I want to become an ML Engineer in 6 months...">
+        <button class="btn-action" onclick="handleSendGoal()">Send</button>
+      </div>
+      <div style="text-align: right; margin-top: 14px;">
+        <button class="btn-action" onclick="switchScreen('assess')">Proceed to Diagnostic Assessment ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 03: ASSESSMENT
+     ========================================================= -->
+  <div id="screen-assess" class="screen">
+    <div class="screen-tag">
+      <span>03 · Diagnostic Knowledge Assessment</span>
+      <span class="screen-pill">Step 3 of 6</span>
+    </div>
+    <div class="assess-wrap">
+      <div class="assess-top">
+        <span class="diff-badge">Medium · Probability</span>
+        <span class="momentum-label">Question 1 of 5</span>
+      </div>
+      <div class="q-progress">
+        <div class="q-progress-fill" style="width:20%;"></div>
+      </div>
+      <p class="q-text">A fair coin is flipped 3 times. What's the probability of getting exactly 2 heads?</p>
+      <div class="options">
+        <div class="opt" onclick="selectOpt(this)"><span class="opt-letter">A</span> 1/8</div>
+        <div class="opt" onclick="selectOpt(this)"><span class="opt-letter">B</span> 3/8</div>
+        <div class="opt" onclick="selectOpt(this)"><span class="opt-letter">C</span> 1/2</div>
+        <div class="opt" onclick="selectOpt(this)"><span class="opt-letter">D</span> 3/4</div>
+      </div>
+      <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; color: var(--text-secondary);">Select your answer to score demonstrated
+          evidence</span>
+        <button class="btn-action" onclick="switchScreen('results')">Submit &amp; Analyze Gaps ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 04: RESULTS
+     ========================================================= -->
+  <div id="screen-results" class="screen">
+    <div class="screen-tag">
+      <span>04 · Skill Gap &amp; Prerequisite Analysis</span>
+      <span class="screen-pill">Step 4 of 6</span>
+    </div>
+    <div class="results-wrap">
+      <div class="dash-top">
+        <div>
+          <h2
+            style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: var(--text-primary);">
+            Assessment Summary</h2>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Demonstrated evidence scored from
+            diagnostic items.</p>
+        </div>
+        <div class="momentum">
+          <span class="flame">🔥</span>
+          <div>
+            <div class="momentum-bar">
+              <div class="momentum-fill" style="width:78%"></div>
+            </div>
+            <div class="momentum-label">+150 XP · 790 XP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diff-box">
+        <strong>🚨 Claimed vs Demonstrated Deficit Detected</strong>
+        You self-reported <b>80% proficiency in Probability</b>, but demonstrated test score was <b>0%</b>. The roadmap
+        engine has scheduled Probability Fundamentals in Stage 1 to resolve this bottleneck before core ML.
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Assessed competencies (weakest-first)</div>
+        <div class="skill-row">
+          <span class="skill-name">Probability</span>
+          <div class="skill-track">
+            <div class="skill-fill" style="width:20%; background:var(--c-coral)"></div>
+          </div>
+          <span class="skill-pct" style="color:var(--c-coral)">20% · weak</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">ML Foundations</span>
+          <div class="skill-track">
+            <div class="skill-fill" style="width:60%; background:var(--c-cerulean)"></div>
+          </div>
+          <span class="skill-pct" style="color:var(--c-cerulean)">60% · building</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Python</span>
+          <div class="skill-track">
+            <div class="skill-fill" style="width:100%; background:var(--c-jade)"></div>
+          </div>
+          <span class="skill-pct" style="color:var(--c-jade)">100% · strong</span>
+        </div>
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn-action" onclick="switchScreen('roadmap')">See updated roadmap ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 02: ROADMAP
+     ========================================================= -->
+  <div id="screen-roadmap" class="screen">
+    <div class="screen-tag">
+      <span>05 · Personalized Learning Roadmap</span>
+      <span class="screen-pill">Step 5 of 6</span>
+    </div>
+    <div class="roadmap-wrap">
+      <div class="track">
+        <div class="stage done">
+          <div class="node">✓</div>
+          <p class="stage-title">Python refresh</p>
+          <p class="stage-sub">Done · 4h</p>
+        </div>
+        <div class="stage current">
+          <div class="node">2</div>
+          <p class="stage-title">Probability</p>
+          <p class="stage-sub">In progress · 6h</p>
+          <div class="stage-card">
+            <strong>🚨 Prerequisite bottleneck</strong>
+            Required before core ML. Feedback: "too difficult" logged — pace adjusted and interactive modules inserted.
+            <div class="resource-item">
+              <div>
+                <div style="font-weight: 700; color: var(--text-primary);">Seeing Theory: Probability</div>
+                <div style="font-size: 11px; color: var(--text-secondary);">Brown University · Interactive</div>
+              </div>
+              <a href="https://seeing-theory.brown.edu/" target="_blank" class="res-link">Launch ➔</a>
+            </div>
+          </div>
+        </div>
+        <div class="stage locked">
+          <div class="node">3</div>
+          <p class="stage-title">Core ML</p>
+          <p class="stage-sub">Locked · 10h</p>
+        </div>
+        <div class="stage locked">
+          <div class="node">4</div>
+          <p class="stage-title">Deep learning</p>
+          <p class="stage-sub">Locked · 14h</p>
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="btn-action" onclick="switchScreen('dash')">Go to Master Dashboard ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     SCREEN 01: DASHBOARD
+     ========================================================= -->
+  <div id="screen-dash" class="screen">
+    <div class="screen-tag">
+      <span>06 · Master Dashboard &amp; Cockpit</span>
+      <span class="screen-pill">Live Hub</span>
+    </div>
+    <div class="dash">
+      <div class="rail">
+        <div class="rail-brand">PathFinder</div>
+        <div class="rail-item" onclick="switchScreen('profile')">Profile</div>
+        <div class="rail-item" onclick="switchScreen('chat')">Chat</div>
+        <div class="rail-item" onclick="switchScreen('assess')">Assessment</div>
+        <div class="rail-item" onclick="switchScreen('results')">Results</div>
+        <div class="rail-item" onclick="switchScreen('roadmap')">Roadmap</div>
+        <div class="rail-item active" onclick="switchScreen('dash')">Dashboard</div>
+      </div>
+      <div class="dash-main">
+        <div class="dash-top">
+          <div>
+            <p class="greet" id="dash-greet-name">Welcome back, Explorer</p>
+            <p class="greet-sub" id="dash-goal-desc">Goal: Machine Learning Engineer · 6 months</p>
+          </div>
+          <div class="momentum">
+            <span class="flame">🔥</span>
+            <div>
+              <div class="momentum-bar">
+                <div class="momentum-fill" style="width:64%"></div>
+              </div>
+              <div class="momentum-label">7-day streak · 640/1000 xp</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric-label">Roadmap progress</p>
+            <p class="metric-val">32%</p>
+          </div>
+          <div class="metric success">
+            <p class="metric-label">Skills assessed</p>
+            <p class="metric-val" style="color:var(--c-jade)">14</p>
+          </div>
+          <div class="metric urgent">
+            <p class="metric-label">Weak prerequisites</p>
+            <p class="metric-val" style="color:var(--c-coral)">2</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <span>Demonstrated vs target</span>
+            <span class="panel-tag">Evidence-Based</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Python</span>
+            <div class="skill-track">
+              <div class="skill-fill" style="width:82%; background:var(--c-jade)"></div>
+            </div>
+            <span class="skill-pct" style="color:var(--c-jade)">82% · strong</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Probability</span>
+            <div class="skill-track">
+              <div class="skill-fill" style="width:34%; background:var(--c-coral)"></div>
+            </div>
+            <span class="skill-pct" style="color:var(--c-coral)">34% · weak</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">ML systems</span>
+            <div class="skill-track">
+              <div class="skill-fill" style="width:58%; background:var(--c-cerulean)"></div>
+            </div>
+            <span class="skill-pct" style="color:var(--c-cerulean)">58% · building</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Badges earned</div>
+          <div class="badges">
+            <span class="badge jade">✓ Python · Mastered</span>
+            <span class="badge jade">✓ Git · Mastered</span>
+            <span class="badge tangerine">● ML Systems · In Progress</span>
+            <span class="badge crimson">🔒 Probability · Bottleneck</span>
+          </div>
+        </div>
+
+        <div class="chat-bar" onclick="switchScreen('chat')">💬&nbsp; Ask why probability blocks the next stage…</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('screen-' + screenId);
+      if (target) {
+        target.classList.add('visible');
+      }
+
+      const tabs = document.querySelectorAll('.tab-btn');
+      const tabIndex = ['profile', 'chat', 'assess', 'results', 'roadmap', 'dash'].indexOf(screenId);
+      if (tabIndex !== -1 && tabs[tabIndex]) {
+        tabs[tabIndex].classList.add('active');
+      }
+    }
+
+    function saveProfileAndContinue() {
+      const name = document.getElementById('input-name').value.trim() || 'Explorer';
+      const role = document.getElementById('input-role').value.trim() || 'Software Developer';
+
+      document.getElementById('dash-greet-name').innerText = 'Welcome back, ' + name;
+      document.getElementById('chat-assistant-msg').innerText = 'Hello ' + name + '! I am your XCL PathFinder career copilot. Tell me about your target role, timeline, and weekly hours.';
+
+      switchScreen('chat');
+    }
+
+    function handleSendGoal() {
+      const input = document.getElementById('chat-input-field');
+      const val = input.value.trim() || 'I want to become an ML Engineer in 6 months with 8 hours/week.';
+
+      const userMsg = document.getElementById('chat-user-msg');
+      userMsg.innerText = val;
+      userMsg.style.display = 'block';
+
+      const card = document.getElementById('goal-card-wrap');
+      card.style.display = 'block';
+      input.value = '';
+    }
+
+    function selectOpt(element) {
+      const parent = element.parentElement;
+      parent.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-btn-label');
+      const title = document.getElementById('header-title');
+      const sub = document.getElementById('header-sub');
+      const badge = document.getElementById('theme-badge');
+
+      if (next === 'dark') {
+        icon.innerText = '☀️';
+        label.innerText = 'Medium Red Light';
+        title.innerHTML = 'Welcome to <span>XCL PathFinder</span>';
+        sub.innerHTML = 'Medium well-done royal purple canvas (<code>#231032</code>) with amethyst card layers, neon magenta CTAs, and aquamarine mint.';
+        badge.innerText = '🌙 Velvet Purple Dark Active';
+      } else {
+        icon.innerText = '🌙';
+        label.innerText = 'Velvet Purple Dark';
+        title.innerHTML = 'Welcome to <span>XCL PathFinder</span>';
+        sub.innerHTML = 'Begin your personalized learning journey with evidence-based competency calibration.';
+        badge.innerText = '☀️ Medium Red Light Active';
+      }
+    }
+  </script>
+
+</body>
+
+</html>

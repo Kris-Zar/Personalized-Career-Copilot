@@ -1,0 +1,164 @@
+[
+  {
+    "resource_id": "res_py_01",
+    "title": "Clean Code in Python & Advanced OOP",
+    "resource_type": "course",
+    "provider": "Real Python / MIT OCW",
+    "url": "https://realpython.com/learning-paths/python3-intermediate/",
+    "skills_covered": ["py_core"],
+    "prerequisite_skill_ids": [],
+    "difficulty": "beginner",
+    "estimated_hours": 6.0,
+    "format": "interactive",
+    "quality_score": 4.9,
+    "metadata": {
+      "level": "Practical Intermediate",
+      "author": "Real Python Team"
+    }
+  },
+  {
+    "resource_id": "res_py_proj_01",
+    "title": "Project: Modular CLI Pipeline for Data Ingestion & Quality Testing",
+    "resource_type": "project",
+    "provider": "GitHub Open Source",
+    "url": "https://github.com/topics/python-data-pipeline",
+    "skills_covered": ["py_core", "py_data"],
+    "prerequisite_skill_ids": ["py_core"],
+    "difficulty": "intermediate",
+    "estimated_hours": 8.0,
+    "format": "hands-on",
+    "quality_score": 4.8,
+    "metadata": {
+      "outcome": "Portfolio Repo with Pytest, Typing, and CLI tool"
+    }
+  },
+  {
+    "resource_id": "res_math_prob_01",
+    "title": "Probability & Statistics for Machine Learning (Intuition & Proofs)",
+    "resource_type": "course",
+    "provider": "StatQuest / Khan Academy / 3Blue1Brown",
+    "url": "https://www.statquest.org/video-index/",
+    "skills_covered": ["math_prob_stats"],
+    "prerequisite_skill_ids": [],
+    "difficulty": "intermediate",
+    "estimated_hours": 8.0,
+    "format": "video",
+    "quality_score": 4.95,
+    "metadata": {
+      "topics": ["Bayes Rule", "Probability Distributions", "MLE vs MAP"]
+    }
+  },
+  {
+    "resource_id": "res_math_prob_bite_01",
+    "title": "Bite-Sized Probability Fundamentals: 15-Minute Daily Exercises",
+    "resource_type": "exercise",
+    "provider": "Brilliant.org / Seeing Theory (Brown Univ)",
+    "url": "https://seeing-theory.brown.edu/",
+    "skills_covered": ["math_prob_stats"],
+    "prerequisite_skill_ids": [],
+    "difficulty": "beginner",
+    "estimated_hours": 3.0,
+    "format": "interactive",
+    "quality_score": 4.9,
+    "metadata": {
+      "adapted_for_short_sessions": true,
+      "interactive_visuals": true
+    }
+  },
+  {
+    "resource_id": "res_math_linalg_01",
+    "title": "Essence of Linear Algebra & Matrix Transformations",
+    "resource_type": "video",
+    "provider": "3Blue1Brown & Gilbert Strang MIT",
+    "url": "https://www.3blue1brown.com/topics/linear-algebra",
+    "skills_covered": ["math_linear_algebra"],
+    "prerequisite_skill_ids": [],
+    "difficulty": "intermediate",
+    "estimated_hours": 6.0,
+    "format": "video",
+    "quality_score": 5.0,
+    "metadata": {
+      "focus": "Geometric intuition for vectors and eigenvalues"
+    }
+  },
+  {
+    "resource_id": "res_ml_core_01",
+    "title": "Scikit-Learn Machine Learning in Python & Validation Techniques",
+    "resource_type": "course",
+    "provider": "INRIA / Scikit-Learn MOOC",
+    "url": "https://inria.github.io/scikit-learn-mooc/",
+    "skills_covered": ["ml_foundations"],
+    "prerequisite_skill_ids": ["py_data", "math_prob_stats", "math_linear_algebra"],
+    "difficulty": "intermediate",
+    "estimated_hours": 12.0,
+    "format": "interactive",
+    "quality_score": 4.9,
+    "metadata": {
+      "curriculum": "Supervised models, regularized regressions, tree ensembles"
+    }
+  },
+  {
+    "resource_id": "res_ml_proj_01",
+    "title": "Project: End-to-End Credit Default Prediction with Imbalance Handling",
+    "resource_type": "project",
+    "provider": "Kaggle & OpenML",
+    "url": "https://www.kaggle.com/code",
+    "skills_covered": ["ml_foundations", "math_prob_stats"],
+    "prerequisite_skill_ids": ["ml_foundations"],
+    "difficulty": "intermediate",
+    "estimated_hours": 10.0,
+    "format": "hands-on",
+    "quality_score": 4.85,
+    "metadata": {
+      "deliverables": ["EDA report", "Feature engineering pipeline", "Model benchmark table"]
+    }
+  },
+  {
+    "resource_id": "res_dl_pytorch_01",
+    "title": "Deep Learning with PyTorch: Zero to Mastery",
+    "resource_type": "course",
+    "provider": "Learn PyTorch / NYU Deep Learning",
+    "url": "https://www.learnpytorch.io/",
+    "skills_covered": ["dl_neural_nets"],
+    "prerequisite_skill_ids": ["ml_foundations", "math_calculus"],
+    "difficulty": "advanced",
+    "estimated_hours": 14.0,
+    "format": "interactive",
+    "quality_score": 4.9,
+    "metadata": {
+      "stack": ["PyTorch", "Tensors", "Custom Autograd", "Transfer Learning"]
+    }
+  },
+  {
+    "resource_id": "res_nlp_hf_01",
+    "title": "Hugging Face NLP Course & LLM Fine-Tuning",
+    "resource_type": "course",
+    "provider": "Hugging Face",
+    "url": "https://huggingface.co/learn/nlp-course/",
+    "skills_covered": ["nlp_transformers"],
+    "prerequisite_skill_ids": ["dl_neural_nets"],
+    "difficulty": "advanced",
+    "estimated_hours": 12.0,
+    "format": "interactive",
+    "quality_score": 4.95,
+    "metadata": {
+      "stack": ["Transformers", "Datasets", "Evaluate", "LoRA/PEFT"]
+    }
+  },
+  {
+    "resource_id": "res_mlops_01",
+    "title": "Production MLOps: Packaging Models with FastAPI, Docker & MLflow",
+    "resource_type": "project",
+    "provider": "Made With ML",
+    "url": "https://madewithml.com/",
+    "skills_covered": ["ml_ops"],
+    "prerequisite_skill_ids": ["ml_foundations", "py_core"],
+    "difficulty": "advanced",
+    "estimated_hours": 10.0,
+    "format": "hands-on",
+    "quality_score": 4.9,
+    "metadata": {
+      "skills": ["Docker", "FastAPI", "Testing", "CI/CD GitHub Actions"]
+    }
+  }
+]

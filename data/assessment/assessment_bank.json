@@ -1,0 +1,164 @@
+[
+  {
+    "item_id": "q_py_01",
+    "skill_id": "py_core",
+    "concept_id": "list_comprehensions_generators",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "prompt": "What is the primary memory and execution difference between a list comprehension and a generator expression in Python?",
+    "code_snippet": "# Expression A: [x**2 for x in range(1000000)]\n# Expression B: (x**2 for x in range(1000000))",
+    "options": [
+      "Expression A evaluates lazily; Expression B allocates all memory immediately.",
+      "Expression B uses lazy evaluation and produces items on-demand, consuming minimal memory, while Expression A builds the entire list in memory at once.",
+      "Expression A is faster because generators are single-threaded.",
+      "Both allocate the exact same amount of memory in Python 3."
+    ],
+    "correct_answer": "Expression B uses lazy evaluation and produces items on-demand, consuming minimal memory, while Expression A builds the entire list in memory at once.",
+    "explanation": "Generator expressions return an iterator that yields elements one at a time on demand (O(1) memory), whereas list comprehensions eagerly allocate and evaluate all elements in memory.",
+    "evidence_weight": 1.0
+  },
+  {
+    "item_id": "q_py_02",
+    "skill_id": "py_core",
+    "concept_id": "dict_lookups_complexity",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "What is the average time complexity for checking key membership (`key in my_dict`) and lookup (`my_dict[key]`) in a Python dictionary?",
+    "code_snippet": null,
+    "options": [
+      "O(n) linear search across keys",
+      "O(log n) binary search on sorted keys",
+      "O(1) average constant time using hash tables",
+      "O(n log n) based on internal tree structure"
+    ],
+    "correct_answer": "O(1) average constant time using hash tables",
+    "explanation": "Python dictionaries are implemented using sparse hash tables with open addressing, providing O(1) average time complexity for key lookups and membership tests.",
+    "evidence_weight": 1.5
+  },
+  {
+    "item_id": "q_prob_01",
+    "skill_id": "math_prob_stats",
+    "concept_id": "bayes_theorem",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "A medical diagnostic test has a 99% true positive rate (sensitivity) and a 5% false positive rate. A rare disease affects 0.1% (1 in 1000) of the population. If a randomly selected patient tests positive, what is the approximate posterior probability P(Disease | Positive) that they actually have the disease?",
+    "code_snippet": "# Prior P(D) = 0.001, P(Pos|D) = 0.99, P(Pos|~D) = 0.05\n# Calculate P(D | Pos) using Bayes Theorem",
+    "options": [
+      "Approx. 95%",
+      "Approx. 50%",
+      "Approx. 1.94% (~2%)",
+      "Approx. 99%"
+    ],
+    "correct_answer": "Approx. 1.94% (~2%)",
+    "explanation": "By Bayes' theorem: P(D|Pos) = [P(Pos|D)*P(D)] / [P(Pos|D)*P(D) + P(Pos|~D)*P(~D)] = (0.99*0.001) / (0.99*0.001 + 0.05*0.999) = 0.00099 / (0.00099 + 0.04995) = 0.00099 / 0.05094 ≈ 0.0194 (1.94%). Because base rate is so low, false positives outnumber true positives.",
+    "evidence_weight": 2.0
+  },
+  {
+    "item_id": "q_prob_02",
+    "skill_id": "math_prob_stats",
+    "concept_id": "expectation_variance_distributions",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "If two continuous random variables X and Y are independent, which of the following properties holds strictly for their covariance and variance?",
+    "code_snippet": null,
+    "options": [
+      "Cov(X, Y) = Var(X) * Var(Y)",
+      "Cov(X, Y) = 0 and Var(X + Y) = Var(X) + Var(Y)",
+      "Var(X - Y) = Var(X) - Var(Y)",
+      "E[X / Y] = E[X] / E[Y]"
+    ],
+    "correct_answer": "Cov(X, Y) = 0 and Var(X + Y) = Var(X) + Var(Y)",
+    "explanation": "Independence implies Cov(X, Y) = 0. For independent random variables, Var(X + Y) = Var(X) + Var(Y) + 2Cov(X, Y) = Var(X) + Var(Y). Note that Var(X - Y) is also Var(X) + Var(Y).",
+    "evidence_weight": 1.5
+  },
+  {
+    "item_id": "q_linalg_01",
+    "skill_id": "math_linear_algebra",
+    "concept_id": "eigenvalues_and_svd",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "In Principal Component Analysis (PCA), the principal directions are given by the eigenvectors of which matrix?",
+    "code_snippet": null,
+    "options": [
+      "The raw feature matrix X",
+      "The covariance matrix of the centered data (X_centered.T @ X_centered)",
+      "The inverse diagonal matrix of feature variances",
+      "The Hessian matrix of the loss function"
+    ],
+    "correct_answer": "The covariance matrix of the centered data (X_centered.T @ X_centered)",
+    "explanation": "PCA finds orthogonal axes of maximum variance by computing the eigenvectors of the empirical data covariance matrix (or via Singular Value Decomposition on centered data).",
+    "evidence_weight": 1.5
+  },
+  {
+    "item_id": "q_ml_01",
+    "skill_id": "ml_foundations",
+    "concept_id": "bias_variance_tradeoff",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "A machine learning model achieves 99.8% accuracy on the training set but only 68.2% accuracy on the held-out validation set. Which diagnostic and remediation strategy is most appropriate?",
+    "code_snippet": null,
+    "options": [
+      "High Bias (Underfitting); increase model capacity or add polynomial features.",
+      "High Variance (Overfitting); apply regularization (L1/L2), use cross-validation, reduce model capacity, or collect more data.",
+      "Data Leakage; train accuracy is too high so validation set must be expanded.",
+      "Vanishing Gradient problem; replace ReLU activations with Sigmoid."
+    ],
+    "correct_answer": "High Variance (Overfitting); apply regularization (L1/L2), use cross-validation, reduce model capacity, or collect more data.",
+    "explanation": "A huge discrepancy between near-perfect training score and mediocre validation score is the textbook symptom of high variance (overfitting). Remedies include regularization, dropout, pruning, or simpler models.",
+    "evidence_weight": 1.5
+  },
+  {
+    "item_id": "q_ml_02",
+    "skill_id": "ml_foundations",
+    "concept_id": "roc_auc_imbalanced_data",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "prompt": "You are training a model on an extremely imbalanced fraud detection dataset (0.05% fraudulent transactions). Why is Accuracy a poor evaluation metric, and what metric is better suited?",
+    "code_snippet": null,
+    "options": [
+      "Accuracy always overestimates false positives; Mean Squared Error is better.",
+      "A trivial model predicting 'Non-Fraud' for everything achieves 99.95% accuracy while catching zero fraud; Precision-Recall AUC (PR-AUC) or F1-Score (Macro/Binary) is much more informative.",
+      "Accuracy is non-differentiable; Cross-entropy loss must be used as the evaluation metric.",
+      "Accuracy is sensitive to outliers; R-squared should be used."
+    ],
+    "correct_answer": "A trivial model predicting 'Non-Fraud' for everything achieves 99.95% accuracy while catching zero fraud; Precision-Recall AUC (PR-AUC) or F1-Score (Macro/Binary) is much more informative.",
+    "explanation": "Under severe class imbalance, the accuracy paradox means trivial majority class classifiers look phenomenal despite being useless. PR-AUC and F1-score isolate true positive recall vs precision.",
+    "evidence_weight": 2.0
+  },
+  {
+    "item_id": "q_dl_01",
+    "skill_id": "dl_neural_nets",
+    "concept_id": "backprop_vanishing_gradients",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "Why do deep neural networks using standard Sigmoid activation functions frequently suffer from vanishing gradients in early layers during backpropagation?",
+    "code_snippet": "sigma(z) = 1 / (1 + exp(-z))\nsigma'(z) = sigma(z) * (1 - sigma(z))",
+    "options": [
+      "The maximum derivative of Sigmoid is 0.25; multiplying these small fractions repeatedly via the chain rule causes gradients to vanish exponentially.",
+      "Sigmoid is unbounded for large negative inputs, causing numerical underflow.",
+      "Sigmoid requires matrix inversion which is numerically unstable.",
+      "The loss gradient cannot propagate past the output layer."
+    ],
+    "correct_answer": "The maximum derivative of Sigmoid is 0.25; multiplying these small fractions repeatedly via the chain rule causes gradients to vanish exponentially.",
+    "explanation": "Since d/dz(sigmoid) <= 0.25, repeated multiplication through N layers in backprop scales gradients by <= 0.25^N, causing gradients in the early layers to approach 0.",
+    "evidence_weight": 1.5
+  },
+  {
+    "item_id": "q_llm_01",
+    "skill_id": "llm_integration",
+    "concept_id": "structured_tool_calling",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "prompt": "When building an AI agent system that interacts with databases and external APIs, what is the best practice for ensuring deterministic state changes?",
+    "code_snippet": null,
+    "options": [
+      "Instruct the LLM to directly output SQL queries and execute them immediately with `eval()`",
+      "Use structured tool/function calling with strict JSON/Pydantic schema validation, and invoke deterministic backend application services rather than letting free-form LLM text mutate state.",
+      "Ask the LLM twice and compare if responses match before writing to the database.",
+      "Store LLM conversational memory directly as database rows without schema validation."
+    ],
+    "correct_answer": "Use structured tool/function calling with strict JSON/Pydantic schema validation, and invoke deterministic backend application services rather than letting free-form LLM text mutate state.",
+    "explanation": "Guardrails require LLMs to be used for natural language understanding and structured tool dispatch, while deterministic backend services validate schemas and execute state mutations safely.",
+    "evidence_weight": 1.5
+  }
+]

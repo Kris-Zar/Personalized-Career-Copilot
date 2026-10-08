@@ -1,0 +1,58 @@
+[
+  {
+    "goal_id": "goal_data_scientist",
+    "target_role": "Data Scientist",
+    "title": "Data Scientist Track",
+    "description": "Master data analysis, statistical modeling, machine learning algorithms, and storytelling with data.",
+    "skill_graph_file": "ml_engineer.json",
+    "recommended_timeline_months": 6,
+    "recommended_weekly_hours": 8.0,
+    "target_proficiency_by_skill": {
+      "py_core": 0.85,
+      "py_data": 0.90,
+      "math_prob_stats": 0.85,
+      "math_linear_algebra": 0.70,
+      "ml_foundations": 0.85,
+      "dl_neural_nets": 0.60,
+      "nlp_transformers": 0.60
+    }
+  },
+  {
+    "goal_id": "goal_ml_engineer",
+    "target_role": "Machine Learning Engineer",
+    "title": "Machine Learning Engineer Track",
+    "description": "Master end-to-end ML from core mathematics and classical algorithms to deep learning, transformers, and production MLOps.",
+    "skill_graph_file": "ml_engineer.json",
+    "recommended_timeline_months": 6,
+    "recommended_weekly_hours": 8.0,
+    "target_proficiency_by_skill": {
+      "py_core": 0.85,
+      "py_data": 0.80,
+      "math_linear_algebra": 0.75,
+      "math_prob_stats": 0.80,
+      "math_calculus": 0.75,
+      "ml_foundations": 0.85,
+      "dl_neural_nets": 0.80,
+      "nlp_transformers": 0.75,
+      "cv_vision": 0.75,
+      "ml_ops": 0.75
+    }
+  },
+  {
+    "goal_id": "goal_fullstack_ai",
+    "target_role": "Full-Stack AI Developer",
+    "title": "Full-Stack AI Developer Track",
+    "description": "Build modern AI web applications combining React, FastAPI, LLM agents, and vector databases.",
+    "skill_graph_file": "fullstack_ai.json",
+    "recommended_timeline_months": 4,
+    "recommended_weekly_hours": 10.0,
+    "target_proficiency_by_skill": {
+      "web_frontend": 0.80,
+      "web_backend": 0.85,
+      "db_systems": 0.75,
+      "llm_integration": 0.85,
+      "vector_db_rag": 0.80,
+      "fullstack_deployment": 0.75
+    }
+  }
+]
